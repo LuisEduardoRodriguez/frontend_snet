@@ -1,10 +1,13 @@
+import { HeaderPriv } from "./components/layouts/private/HeaderPriv"
+import { HeaderPub } from "./components/layouts/public/HeaderPub"
 
 
 function App() {
 
   return (
     <>
-      <h1>Frontend de Red Social</h1>
+      <HeaderPub/>
+      
     </>
   )
 }

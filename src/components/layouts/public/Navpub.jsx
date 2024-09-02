@@ -1,7 +1,21 @@
+export const NavPub = () => {
+    return (
+      <nav className="navbar__container-lists">
+        <ul className="container-lists__menu-list">
+          <li className="menu-list__item">
+            <a href='#' className="menu-list__link">
+              <i className="fa-solid fa-user"></i>
+              <span className="menu-list__title">Login</span>
+            </a>
+          </li>
 
-
-export const Navpub = () => {
-  return (
-    <div>Navpub</div>
-  )
-}
+          <li className="menu-list__item">
+            <a href='#' className="menu-list__link">
+              <i className="fa-solid fa-users"></i>
+              <span className="menu-list__title">Registro</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    )
+  }
