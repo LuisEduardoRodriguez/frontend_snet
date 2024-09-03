@@ -1,14 +1,12 @@
-import { HeaderPriv } from "./components/layouts/private/HeaderPriv"
-import { HeaderPub } from "./components/layouts/public/HeaderPub"
+import { Routing } from "./router/Routing"
 
 
 function App() {
 
   return (
-    <>
-      <HeaderPub/>
-      
-    </>
+    <div className="layout">
+      <Routing />
+    </div>
   )
 }
 
