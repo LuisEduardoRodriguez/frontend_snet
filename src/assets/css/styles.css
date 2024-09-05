@@ -487,3 +487,8 @@ button{
     background-color: #fff; /* Opcional: establece un color de fondo */
     margin: 0 auto; /* Centrar horizontalmente */
 }
+
+.layout.error {
+    grid-template-columns: 100% !important;
+  }
+  
