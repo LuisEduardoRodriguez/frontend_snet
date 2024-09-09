@@ -32,14 +32,14 @@ export const Register = () => {
   
       // Obtener la información retornada por la request
       const data = await request.json();
-  
+
       // Verificar si el estado de la respuesta del backend es "created" seteamos la variable saved con "saved" y si no, le asignamos "error", esto es para mostrar por pantalla el resultado del registro del usuario
-      if (data.status == "created") {
+      if (request.status === 201 && data.status === "created") {
         setSaved("saved");
   
         // Mostrar modal de éxito
         Swal.fire({
-          title: '¡Usuario registrado correctamente!',
+          title: data.message,
           icon: 'success',
           confirmButtonText: 'Continuar',
         }).then(() => {
@@ -52,7 +52,7 @@ export const Register = () => {
   
         // Mostrar modal de error
         Swal.fire({
-          title: '¡El usuario no se ha registrado!',
+          title: data.message || "¡Error en el registro!",
           icon: 'error',
           confirmButtonText: 'Intentar nuevamente',
         });
@@ -69,26 +69,34 @@ export const Register = () => {
       <div className="content__posts">
         <div className="form-style">
 
-          <form className="register-form">
+          {/* Respuestas de usuario registrado*/}
+          {saved == "saved" ? (
+              <strong className="alert alert-success">¡Usuario registrado correctamente!</strong>
+            ) : ''}
+          {saved == "error" ? (
+            <strong className="alert alert-danger">¡El usuario no se ha registrado!</strong>
+          ) : ''}
+
+          <form className="register-form" onSubmit={saveUser}>
             <div className="form-group">
               <label htmlFor="name">Nombres</label>
-              <input type="text" name="name" required />
+              <input type="text" name="name" required onChange={changed} />
             </div>
             <div className="form-group">
               <label htmlFor="last_name">Apellidos</label>
-              <input type="text" name="last_name" required />
+              <input type="text" name="last_name" required onChange={changed} />
             </div>
             <div className="form-group">
               <label htmlFor="nick">Nick</label>
-              <input type="text" name="nick" required />
+              <input type="text" name="nick" required onChange={changed} />
             </div>
             <div className="form-group">
               <label htmlFor="email">Correo Electrónico</label>
-              <input type="email" name="email" required />
+              <input type="email" name="email" required onChange={changed} />
             </div>
             <div className="form-group">
               <label htmlFor="password">Contraseña</label>
-              <input type="password" name="password" required />
+              <input type="password" name="password" required onChange={changed} />
             </div>
 
             <input type="submit" value="Regístrate" className="btn btn-success" />
