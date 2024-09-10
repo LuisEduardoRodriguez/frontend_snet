@@ -1,12 +1,9 @@
 import { useState } from 'react';
 import { Global } from '../../helpers/Global';
 import { useForm } from '../../hooks/useForm';
-import useAuth from "../../hooks/useAuth";
 
 
 export const Login = () => {
-
-  const { share } = useAuth();
 
   // Estado para obtener los datos desde el formulario
   const { form, changed } = useForm({});
@@ -52,7 +49,7 @@ export const Login = () => {
   return (
     <>
       <header className="content__header content__header--public">
-        <h1 className="content__title">Login {share} </h1>
+        <h1 className="content__title">Login</h1>
       </header>
 
       {/* Formulario de Login*/}
@@ -87,4 +84,3 @@ export const Login = () => {
     </>
   )
 }
-

@@ -1,6 +1,11 @@
 import avatar from '../../../assets/img/default_user.png';
+import useAuth from '../../../hooks/useAuth';
 
 export const Sidebar = () => {
+
+  const { auth } = useAuth();
+
+  console.log(auth);
 
   return (
     <aside className="layout__aside">
