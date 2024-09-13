@@ -1,10 +1,6 @@
-import avatar from '../../assets/img/default_user.png';
-import useAuth from "../../hooks/useAuth";
+import avatar from '../../assets/img/default.png';
 
 export const Feed = () => {
-
-  const { share } = useAuth();
-  console.log(share);
   
   return (
     <>
@@ -161,4 +157,3 @@ export const Feed = () => {
     </>
   )
 }
-
