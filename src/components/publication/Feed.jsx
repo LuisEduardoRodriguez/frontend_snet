@@ -1,159 +1,72 @@
-import avatar from '../../assets/img/default.png';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { Global } from '../../helpers/Global';
+import { PublicationList } from '../publication/PublicationList';
 
 export const Feed = () => {
-  
-  return (
-    <>
-      <header className="content__header">
-        <h1 className="content__title">Timeline</h1>
-        <button className="content__button">Mostrar nuevas</button>
-      </header>
 
-      <div className="content__posts">
+    const [publications, setPublications] = useState([]);
+    const [page, setPage] = useState(1);
+    const [more, setMore] = useState(true);
 
-        <div className="posts__post">
+    useEffect(() => {
+        getPublications(1, false);
+    }, []);
 
-          <div className="post__container">
+    const getPublications = async (nextPage = 1, showNews = false) => {
 
-            <div className="post__image-user">
-              <a href="#" className="post__image-link">
-                <img src={avatar} className="post__user-image" alt="Foto de perfil" />
-              </a>
-            </div>
+        if(showNews){
+            setPublications([]);
+            setPage(1);
+            nextPage = 1;
+        }
 
-            <div className="post__body">
+        const request = await fetch(Global.url + "publication/feed/" + nextPage, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            }
+        });
 
-              <div className="post__user-info">
-                <a href="#" className="user-info__name">Inés Oliveros</a>
-                <span className="user-info__divider"> | </span>
-                <a href="#" className="user-info__create-date">Hace 1 hora</a>
-              </div>
+        const data = await request.json();
 
-              <h4 className="post__content">Hola, buenos días.</h4>
+        if (data.status == "success") {
 
-            </div>
+            let newPublications = data.publications;
 
-          </div>
+            if (!showNews && publications.length >= 1) {
+                newPublications = [...publications, ...data.publications];
+            }
 
+            setPublications(newPublications);
 
-          <div className="post__buttons">
+            if (!showNews && publications.length >= (data.total - data.publications.length)) {
+                setMore(false);
+            }
 
-            <a href="#" className="post__button">
-              <i className="fa-solid fa-trash-can"></i>
-            </a>
+            if(data.pages <= 1){
+                setMore(false);
+            }
+        }
+    }
 
-          </div>
+    return (
+        <>
+            <header className="content__header">
+                <h1 className="content__title">Timeline</h1>
+                <button className="content__button" onClick={() => getPublications(1, true)}>Mostrar nuevas</button>
+            </header>
 
-        </div>
-
-        <div className="posts__post">
-
-          <div className="post__container">
-
-            <div className="post__image-user">
-              <a href="#" className="post__image-link">
-                <img src={avatar} className="post__user-image" alt="Foto de perfil" />
-              </a>
-            </div>
-
-            <div className="post__body">
-
-              <div className="post__user-info">
-                <a href="#" className="user-info__name">Inés Oliveros</a>
-                <span className="user-info__divider"> | </span>
-                <a href="#" className="user-info__create-date">Hace 1 hora</a>
-              </div>
-
-              <h4 className="post__content">Hola, buenos días.</h4>
-
-            </div>
-          </div>
-
-          <div className="post__buttons">
-
-            <a href="#" className="post__button">
-              <i className="fa-solid fa-trash-can"></i>
-            </a>
-
-          </div>
-
-        </div>
-
-
-        <div className="posts__post">
-
-          <div className="post__container">
-
-            <div className="post__image-user">
-              <a href="#" className="post__image-link">
-                <img src={avatar} className="post__user-image" alt="Foto de perfil" />
-              </a>
-            </div>
-
-            <div className="post__body">
-
-              <div className="post__user-info">
-                <a href="#" className="user-info__name">Inés Oliveros</a>
-                <span className="user-info__divider"> | </span>
-                <a href="#" className="user-info__create-date">Hace 1 hora</a>
-              </div>
-
-              <h4 className="post__content">Hola, buenos días.</h4>
-
-            </div>
-          </div>
-
-          <div className="post__buttons">
-
-            <a href="#" className="post__button">
-              <i className="fa-solid fa-trash-can"></i>
-            </a>
-
-          </div>
-
-        </div>
-
-        <div className="posts__post">
-
-          <div className="post__container">
-
-            <div className="post__image-user">
-              <a href="#" className="post__image-link">
-                <img src={avatar} className="post__user-image" alt="Foto de perfil" />
-              </a>
-            </div>
-
-            <div className="post__body">
-
-              <div className="post__user-info">
-                <a href="#" className="user-info__name">Inés Oliveros</a>
-                <span className="user-info__divider"> | </span>
-                <a href="#" className="user-info__create-date">Hace 1 hora</a>
-              </div>
-
-              <h4 className="post__content">Hola, buenos días.</h4>
-
-            </div>
-          </div>
-
-          <div className="post__buttons">
-
-            <a href="#" className="post__button">
-              <i className="fa-solid fa-trash-can"></i>
-            </a>
-
-          </div>
-
-        </div>
-
-
-      </div>
-
-      <div className="content__container-btn">
-        <button className="content__btn-more-post">
-          Ver más publicaciones
-        </button>
-      </div>
-    </>
-  )
+            <PublicationList
+                publications={publications}
+                getPublications={getPublications}
+                page={page}
+                setPage={setPage}
+                more={more}
+                setMore={setMore}
+            />
+            <br />
+        </>
+    )
 }

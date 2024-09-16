@@ -1,17 +1,13 @@
-import { NavLink } from 'react-router-dom';
-import avatar from '../../../assets/img/default.png';
-import { Global } from '../../../helpers/Global';
-import useAuth from '../../../hooks/useAuth';
+import { NavLink } from "react-router-dom";
+import avatar from "../../../assets/img/default.png";
+import useAuth from "../../../hooks/useAuth";
 
 export const NavPriv = () => {
-
   // Usamos el hook Auth para tener disponible el objeto del usuario identificado.
   const { auth } = useAuth();
 
-
   return (
     <nav className="navbar__container-lists">
-
       <ul className="container-lists__menu-list">
         <li className="menu-list__item">
           <NavLink to="/rsocial" className="menu-list__link">
@@ -38,8 +34,20 @@ export const NavPriv = () => {
       <ul className="container-lists__list-end">
         <li className="list-end__item">
           <div className="img-avatar-nav">
-            {auth.image != "default.png" && <img src={Global.url + "user/avatar/" + auth.image} className="container-avatar__img" alt="Foto de perfil" />}
-            {auth.image == "default.png" && <img src={avatar} className="container-avatar__img" alt="Foto de perfil" />}
+            {auth.image != "default.png" && (
+              <img
+                src={auth.image}
+                className="container-avatar__img"
+                alt="Foto de perfil"
+              />
+            )}
+            {auth.image == "default.png" && (
+              <img
+                src={avatar}
+                className="container-avatar__img"
+                alt="Foto de perfil"
+              />
+            )}
           </div>
         </li>
         <li className="list-end__item">
@@ -49,18 +57,17 @@ export const NavPriv = () => {
         </li>
         <li className="list-end__item">
           <NavLink to="/rsocial/ajustes" className="list-end__link">
-          <i className="fa-solid fa-gear"></i>
+            <i className="fa-solid fa-gear"></i>
             <span className="list-end__name">Ajustes</span>
           </NavLink>
         </li>
         <li className="list-end__item">
           <NavLink to="/rsocial/logout" className="list-end__link">
-          <i className="fa-solid fa-arrow-right-from-bracket"></i>
+            <i className="fa-solid fa-arrow-right-from-bracket"></i>
             <span className="list-end__name">Cerrar sesión</span>
           </NavLink>
         </li>
       </ul>
-
     </nav>
-  )
-}
+  );
+};
