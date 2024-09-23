@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import avatar from "../../../assets/img/default.png";
 import { Global } from "../../../helpers/Global";
@@ -6,9 +7,11 @@ import useAuth from "../../../hooks/useAuth";
 import { useForm } from '../../../hooks/useForm';
 
 export const Sidebar = () => {
-  const { auth, counters } = useAuth();
+
+  const { auth, counters, setCounters } = useAuth();
   const { form, changed } = useForm({});
   const [stored, setStored] = useState("not_stored");
+  const navigate = useNavigate();
 
   const savePublication = async (e) => {
     e.preventDefault();
@@ -34,6 +37,16 @@ export const Sidebar = () => {
     // Mostrar mensaje de exito o error
     if (data.status == "success") {
         setStored("stored");
+
+        // Actualizar el contador de publicaciones después de crear la publicación
+        setCounters((prevCounters) => ({
+          ...prevCounters,
+          publicationsCount: prevCounters.publicationsCount + 1, // Incrementa en 1
+        }));
+
+        // Redirigir a la página de Mis Publicaciones
+        navigate("/rsocial/mis-publicaciones");
+
     } else {
         setStored("error");
     }
@@ -46,7 +59,7 @@ export const Sidebar = () => {
         const formData = new FormData();
         formData.append("file0", fileInput.files[0]);
 
-        const uploadRequest = await fetch(Global.url + "publication/upload-avatar/" + data.publicationStored._id, {
+        const uploadRequest = await fetch(Global.url + "publication/upload-media/" + data.publicationStored._id, {
             method: "POST",
             body: formData,
             headers: {
@@ -163,7 +176,7 @@ export const Sidebar = () => {
 
             <div className="form-post__inputs">
               <label htmlFor="file" className="form-post__label" >
-                Sube tu foto
+                Sube imagen a publicación
               </label>
               <input
                 type="file"
@@ -177,7 +190,6 @@ export const Sidebar = () => {
               type="submit"
               value="Enviar"
               className="form-post__btn-submit"
-              disabled
             />
           </form>
         </div>
